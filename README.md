@@ -1,21 +1,18 @@
 # Context Generator Website
 
-Public repository for the Cap Context homepage and its videos.
+The Cap Context homepage, finished videos, poster and only the shared images needed by the homepage. This is a plain static site with no npm dependencies or build step.
 
-## Setup stage — 2026-10-27
+- Production website: https://spreadz.in/
+- Vercel production: https://context-generator-website.vercel.app/
+- GitHub Pages: https://spidey889.github.io/context-generator-website/ (`main`, repository root)
+- Vercel project: `context-generator-website`, team `vinits-projects-9bc84d4f`; production branch `main`.
 
-This repository currently contains only a small hosting placeholder. The real homepage, videos and assets have not been copied or moved.
+`index.html` embeds `brag/brag.mp4` with `brag/brag.jpg` as its poster. The earlier `2026-05-10 09-51-15.mp4` is retained as a separate finished video. The small `extension/` directory contains six shared PNGs only; it is not an installable extension. Existing source terms are in `LICENSE`.
 
-- GitHub Pages source: `main`, repository root. Default URL: https://spidey889.github.io/context-generator-website/
-- Vercel project: `context-generator-website`, in `vinits-projects-9bc84d4f`, connected to this repository's `main` branch.
-- No custom domain cutover is part of this setup. The existing `spreadz.in` site continues to use the original repository.
+Privacy, analysis, the extension/backend and **all video-making tools and editable sources** remain in [context-generator](https://github.com/spidey889/context-generator). Recreate videos there using `brag/README.md`, then publish only the resulting MP4/JPG files here. Do not copy Python scripts, rendering code, reference files, caches or the whole `brag/` folder into this repository.
 
-## Next stage: move the minimum
+Vercel's `vercel.json` keeps privacy and analysis at their existing `spreadz.in` URLs while reading their files and two dependent images from the original backend deployment. Keep the explicit analysis rules: an earlier wildcard failed for the trailing-slash URL. GitHub Pages serves the static homepage independently; its Privacy Policy link uses the original public address.
 
-Move only the original root `index.html`, the videos and the files actually required by that homepage. Keep privacy, `analysis/`, the extension and the backend in https://github.com/spidey889/context-generator.
+**The website move must not add any Chrome extension permissions.** Keep the extension manifest and backend address unchanged. Never add this repository's or this Vercel project's hostnames to the extension.
 
-**Highest priority: introduce no new extension permissions, site access or runtime permission prompts.** Preserve the existing `spreadz.in/analysis*` and legacy analysis bridge matches and the backend address `https://context-generator-five.vercel.app`. Website hosting does not require adding the new repository or Vercel domain to the extension manifest. Compare the final extension package with the published package before any extension release.
-
-The later domain cutover must preserve the existing public analysis and privacy URLs while their files remain in the original repository. Plan and verify that routing before switching `spreadz.in`.
-
-Chrome rules: [permission warnings](https://developer.chrome.com/docs/extensions/develop/concepts/permission-warnings), [permission declarations](https://developer.chrome.com/docs/extensions/develop/concepts/declare-permissions).
+During the domain transition, the previous copy stays available until the real public URLs have been verified. Domain/DNS status is recorded in the original repository's migration audit.

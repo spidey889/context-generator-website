@@ -1,0 +1,10 @@
+{
+  "rewrites": [
+    { "source": "/privacy.html", "destination": "https://context-generator-five.vercel.app/privacy.html" },
+    { "source": "/analysis", "destination": "https://context-generator-five.vercel.app/analysis/index.html" },
+    { "source": "/analysis/", "destination": "https://context-generator-five.vercel.app/analysis/index.html" },
+    { "source": "/analysis/index.html", "destination": "https://context-generator-five.vercel.app/analysis/index.html" },
+    { "source": "/extension/bubble-icon.png", "destination": "https://context-generator-five.vercel.app/extension/bubble-icon.png" },
+    { "source": "/extension/icon48.png", "destination": "https://context-generator-five.vercel.app/extension/icon48.png" }
+  ]
+}

@@ -1,0 +1,50 @@
+name: Website checks
+on: [push, pull_request]
+permissions:
+  contents: read
+jobs:
+  website:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - name: Check links, media and retained-page configuration
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          from html.parser import HTMLParser
+          from pathlib import Path
+          from urllib.parse import urlsplit, unquote
+          import json
+
+          root = Path.cwd()
+          class Dependencies(HTMLParser):
+              def handle_starttag(self, tag, attrs):
+                  for key, value in attrs:
+                      if key not in ('src', 'href', 'poster') or not value:
+                          continue
+                      url = urlsplit(value)
+                      if url.scheme or url.netloc or not url.path:
+                          continue
+                      target = (root / unquote(url.path)).resolve()
+                      assert target.is_relative_to(root) and target.is_file(), value
+
+          html = (root / 'index.html').read_text(encoding='utf-8')
+          Dependencies().feed(html)
+          assert 'href="https://spreadz.in/privacy.html"' in html
+          assert 'https://spreadz.in/brag/brag.jpg' in html
+          assert 'All rights reserved.' in (root / 'LICENSE').read_text()
+          assert not (root / 'privacy.html').exists()
+          assert not (root / 'analysis').exists()
+          assert not list(root.rglob('*.py'))
+          assert not list(root.rglob('*.cjs'))
+          for file in ('brag/brag.mp4', '2026-05-10 09-51-15.mp4'):
+              assert (root / file).is_file() and (root / file).stat().st_size > 0
+          rules = json.loads((root / 'vercel.json').read_text())['rewrites']
+          expected = {'/privacy.html': '/privacy.html', '/analysis': '/analysis/index.html',
+                      '/analysis/': '/analysis/index.html', '/analysis/index.html': '/analysis/index.html',
+                      '/extension/bubble-icon.png': '/extension/bubble-icon.png',
+                      '/extension/icon48.png': '/extension/icon48.png'}
+          assert {r['source']: r['destination'] for r in rules} == {
+              p: 'https://context-generator-five.vercel.app' + dest for p, dest in expected.items()}
+          print('Website dependencies, both videos, source terms and all six page rules passed.')
+          PY
